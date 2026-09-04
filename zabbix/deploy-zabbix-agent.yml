@@ -1,0 +1,48 @@
+---
+- name: Déploiement et configuration de l'agent Zabbix 7.0
+  hosts: http1, bdd1
+  become: yes
+  vars:
+    # Remplace par l'IP exacte de ton serveur Zabbix
+    zabbix_server_ip: "192.168.1.82"
+
+  tasks:
+    - name: Télécharger le dépôt Zabbix 7.0 compatible (Ubuntu Noble / Debian récent)
+      get_url:
+        url: https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest+ubuntu24.04_all.deb
+        dest: /tmp/zabbix-release.deb
+        mode: '0644'
+
+    - name: Installer le paquet du dépôt Zabbix
+      apt:
+        deb: /tmp/zabbix-release.deb
+
+    - name: Mettre à jour le cache APT et installer zabbix-agent
+      apt:
+        name: zabbix-agent
+        state: present
+        update_cache: yes
+
+    - name: Configurer Server dans zabbix_agentd.conf
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "^Server="
+        line: "Server={{ zabbix_server_ip }}"
+
+    - name: Configurer ServerActive dans zabbix_agentd.conf
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "^ServerActive="
+        line: "ServerActive={{ zabbix_server_ip }}"
+
+    - name: Configurer Hostname dynamique dans zabbix_agentd.conf
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "^Hostname="
+        line: "Hostname={{ inventory_hostname }}"
+
+    - name: Redémarrer et activer l'agent Zabbix
+      service:
+        name: zabbix-agent
+        state: restarted
+        enabled: yes
