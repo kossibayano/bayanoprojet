@@ -1,0 +1,18 @@
+---
+# 1. Mise à jour du cache APT sur la machine cible
+- name: "update apt cache"
+  apt:
+    update_cache: yes
+
+# 2. Installation de PHP et ses extensions
+- name: "install php packages"
+  apt:
+    name:
+      - php
+      - php-mysql
+      - php-xml
+      - php-mbstring
+      - php-gd
+      - php-intl
+    state: latest
+  notify: "apache restart"

@@ -1,0 +1,16 @@
+---
+
+- name: "mediawiki database"
+  ansible.mysql.mysql_db:
+    name: "{{mediawiki_db_name}}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: "mediawiki user and privileges"
+  ansible.mysql.mysql_user:
+    name: "{{mediawiki_db_user}}"
+    password: "{{mediawiki_db_password}}"
+    priv: "{{mediawiki_db_name}}.*:ALL"
+    host: "%"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock

@@ -1,0 +1,25 @@
+---
+
+# Installation des paquets mariadb serveur et son extension Python
+- name: "mariadb-server installation"
+  apt:
+    name: "mariadb-server,python3-mysqldb"
+    state: "present"
+
+# Active le service MariaDB
+- name: "start mariadb service"
+  service:
+    name: "mariadb"
+    state: "started"
+    enabled: yes
+
+# Active l'écoute sur tous les ports IPv4
+- name: "change 50-server.cnf"
+  command:
+    /usr/bin/sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+
+# Restart mariadb
+- name: "restart mariasdb"
+  service:
+    name: "mariadb"
+    state: restarted
