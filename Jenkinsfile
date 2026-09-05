@@ -49,7 +49,7 @@ pipeline {
 
         stage('5. Healthcheck HTTP') {
             steps {
-                echo '=== Test de réponse du serveur Web http1 ==='
+                echo '=== Test de réponse du serveur Web http2 ==='
                 sh 'curl -sI http://http2 | grep "200 OK"'
             }
         }
