@@ -5,7 +5,7 @@ pipeline {
     environment {
         // Paramètres Zabbix
         ZABBIX_URL   = 'http://192.168.1.82/zabbix/' // Ajuste le chemin selon ton installation Zabbix
-        ZABBIX_TOKEN = 63f59e19f0ab6c705a4352b1c41eb9748259c52098f83beddb36d289eafcc6d2''           // Remplace par ton token API Zabbix
+        ZABBIX_TOKEN ='63f59e19f0ab6c705a4352b1c41eb9748259c52098f83beddb36d289eafcc6d2'x           // Remplace par ton token API Zabbix
         ZABBIX_HOST  = 'Jenkins-Server'                             // Nom exact de l'hôte dans Zabbix
 
         // Paramètres SSH / Ansible
